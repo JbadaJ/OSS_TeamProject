@@ -9,12 +9,17 @@ function Page1() {
     const fetchData = async (search) => {
         setIsLoading(true); // 로딩 시작
         try {
-            console.log(`Fetching data with search term: ${search}`);
-            const targetUrl = `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&title=${search}&viewItemCnt=100&pageNo=1`;
+            const API_BASE_URL =
+                process.env.REACT_APP_API_BASE_URL || "http://localhost:5000";
+            const targetUrl = `${API_BASE_URL}/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&title=${search}&viewItemCnt=100&pageNo=1`;
     
+            console.log(`Fetching data from: ${targetUrl}`);
+            
             const response = await fetch(targetUrl);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            const contentType = response.headers.get("content-type");
+    
+            if (!response.ok || !contentType.includes("application/json")) {
+                throw new Error(`Invalid response: ${response.status}`);
             }
     
             const data = await response.json();
@@ -33,6 +38,7 @@ function Page1() {
             setIsLoading(false); // 로딩 종료
         }
     };
+    
     
 
     const handleSearch = (e) => {

@@ -83,7 +83,7 @@ const BookList = ({ books }) => {
           <p style={styles.author}>
             대표(그림)작가: {book.pictrWritrNm || "정보 없음"}
             <br />
-            대표(글)작가: {book.sntncWrtrNm || "정보 없음"}
+            대표(글)작가: {book.sntncWritrNm || "정보 없음"}
           </p>
           
           <div style={styles.actions}>
