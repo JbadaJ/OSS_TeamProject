@@ -7,24 +7,24 @@ function Page1() {
     const [isLoading, setIsLoading] = useState(false); // 로딩 상태
 
     const fetchData = async (search) => {
-        const targetUrl = `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&title=${encodeURIComponent(
-          search
-        )}&viewItemCnt=100&pageNo=1`;
-      
+        setIsLoading(true);
         try {
-          const response = await fetch(targetUrl);
-          const data = await response.json();
-          console.log("Fetched data:", data);
+          const targetUrl = `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&title=${encodeURIComponent(search)}&viewItemCnt=100&pageNo=1`;
       
-          if (data.result?.resultState === "success" && data.itemList) {
-            setItems(data.itemList); // 데이터 설정
-          } else {
-            setItems([]); // 데이터 초기화
-            console.error("API Error:", data.result?.resultMessage);
+          console.log(`Fetching data from: ${targetUrl}`);
+      
+          const response = await fetch(targetUrl);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
           }
+      
+          const data = await response.json();
+          setItems(data.itemList || []);
         } catch (error) {
-          console.error("Fetch Error:", error);
-          setItems([]); // 데이터 초기화
+          console.error("Fetch error:", error);
+          setItems([]);
+        } finally {
+          setIsLoading(false);
         }
       };
       
