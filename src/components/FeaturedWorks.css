@@ -1,0 +1,112 @@
+/* 전체 컨테이너 */
+.featured-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #faf7f4;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 좌측 버튼 */
+.side-buttons {
+    position: absolute;
+    top: 20px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-main {
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-main:hover {
+    background-color: #ff4b4b;
+}
+
+.btn-secondary {
+    background-color: #ffffff;
+    color: #ff6b6b;
+    border: 2px solid #ff6b6b;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #ff6b6b;
+    color: white;
+}
+
+/* 작품 카드 영역 */
+.featured-works {
+    width: 60%;
+    height: 100%;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    position: relative;
+}
+
+.work-card {
+    background: linear-gradient(145deg, #ffffff, #f0f0f0);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    padding: 10px; /* 여백을 절반으로 줄임 */
+    width: 300px;
+    height: 400px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.work-card:nth-child(odd) {
+    transform: translateY(30px); /* 엇갈림 효과 */
+}
+
+.work-card img {
+    max-width: 90%; /* 이미지 크기 증가 */
+    max-height: 70%; /* 이미지 크기 증가 */
+    object-fit: contain; /* 이미지 비율 유지 */
+    background-color: #f0f0f0; /* 여백 배경색 */
+    border-radius: 5px;
+    margin-bottom: 10px; /* 이미지와 제목 사이 간격 */
+}
+
+.work-card h3 {
+    font-size: 1.2rem; /* 제목 폰트 크기 증가 */
+    font-weight: bold;
+    color: #333;
+    margin-top: 5px;
+    margin-bottom: 8px; /* 제목과 설명 사이 간격 */
+}
+
+.work-card p {
+    font-size: 1rem; /* 설명 폰트 크기 증가 */
+    color: #555;
+}
+
+.work-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
