@@ -9,47 +9,26 @@ function Page1() {
     const fetchData = async (search) => {
         setIsLoading(true); // 로딩 시작
         try {
-            // Netlify 배포와 로컬 환경을 위한 API URL 설정
-            const API_BASE_URL =
-                process.env.REACT_APP_API_BASE_URL || "https://your-netlify-backend-url.com";
-    
-            // API 호출 URL 생성 (검색어 인코딩)
-            const targetUrl = `${API_BASE_URL}/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&title=${encodeURIComponent(search)}&viewItemCnt=100&pageNo=1`;
-    
-            console.log(`Fetching data from: ${targetUrl}`);
-            
-            // Fetch API 호출
+            console.log(`Fetching data with search term: ${search}`);
+            const targetUrl = `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&title=${search}&viewItemCnt=100&pageNo=1`;
+
             const response = await fetch(targetUrl);
-    
-            // 응답 상태와 Content-Type 검사
-            const contentType = response.headers.get("content-type");
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            if (!contentType || !contentType.includes("application/json")) {
-                throw new Error("Invalid response: Expected JSON data");
-            }
-    
-            // 응답 데이터 파싱
             const data = await response.json();
             console.log("Raw API Response Data:", data);
-    
-            // API 데이터 유효성 검사 및 상태 업데이트
-            if (data.result?.resultState === "success" && Array.isArray(data.itemList)) {
+
+            if (data.result?.resultState === "success" && data.itemList) {
                 setItems(data.itemList); // itemList 배열 저장
             } else {
-                console.error("API Error:", data.result?.resultMessage || "Unknown error");
+                console.error("API Error Message:", data.result?.resultMessage);
                 setItems([]); // 데이터 초기화
             }
         } catch (error) {
-            // 네트워크 또는 Fetch 에러 처리
-            console.error("Network or Fetch Error:", error.message || error);
+            console.error("Network or Fetch Error:", error);
             setItems([]); // 데이터 초기화
         } finally {
             setIsLoading(false); // 로딩 종료
         }
     };
-    
     
     
     
