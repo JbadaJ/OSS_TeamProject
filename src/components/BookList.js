@@ -80,7 +80,7 @@ const BookList = ({ books }) => {
       {books.map((book, index) => (
         <div key={index} style={styles.card}>
           <img
-          src={book.imageDownloadUrl || "/no-image.png"}
+          src={book.imageDownloadUrl || "/usagi_no_image.png"}
           alt={book.title || "이미지 없음"}
           style={styles.image}
           onError={(e) => {

@@ -114,7 +114,7 @@ const DetailPage = () => {
         style={styles.image} // 스타일 적용
         onError={(e) => {
           e.target.onerror = null; // 무한 호출 방지
-          e.target.src = "/no-image.png"; // 이미지 로드 실패 시 대체 이미지 표시
+          e.target.src = "/usagi_no_image.png"; // 이미지 로드 실패 시 대체 이미지 표시
       }}
     />
 
