@@ -7,30 +7,28 @@ function Page1() {
     const [isLoading, setIsLoading] = useState(false); // 로딩 상태
 
     const fetchData = async (search) => {
-        setIsLoading(true);
+        setIsLoading(true); // 로딩 시작
         try {
-          const targetUrl = `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&title=${encodeURIComponent(search)}&viewItemCnt=100&pageNo=1`;
-      
-          console.log(`Fetching data from: ${targetUrl}`);
-      
-          const response = await fetch(targetUrl);
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-      
-          const data = await response.json();
-          setItems(data.itemList || []);
+            console.log(`Fetching data with search term: ${search}`);
+            const targetUrl = `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&title=${search}&viewItemCnt=100&pageNo=1`;
+
+            const response = await fetch(targetUrl);
+            const data = await response.json();
+            console.log("Raw API Response Data:", data);
+
+            if (data.result?.resultState === "success" && data.itemList) {
+                setItems(data.itemList); // itemList 배열 저장
+            } else {
+                console.error("API Error Message:", data.result?.resultMessage);
+                setItems([]); // 데이터 초기화
+            }
         } catch (error) {
-          console.error("Fetch error:", error);
-          setItems([]);
+            console.error("Network or Fetch Error:", error);
+            setItems([]); // 데이터 초기화
         } finally {
-          setIsLoading(false);
+            setIsLoading(false); // 로딩 종료
         }
-      };
-      
-    
-    
-    
+    };
 
     const handleSearch = (e) => {
         e.preventDefault();
