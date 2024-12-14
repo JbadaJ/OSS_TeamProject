@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from "react";
 import "./FeaturedWorks.css";
 
 const works = [
-  { title: "[전자책]도원암귀 14권", author: "우루시바라 유라", publisher: "S코믹스", image: "https://via.placeholder.com/300x400" },
-  { title: "[전자책]양아치가 고...", author: "츠네키 네타로", publisher: "S코믹스", image: "https://via.placeholder.com/300x400" },
-  { title: "[전자책]내 최애는 악...", author: "아오노 시모", publisher: "S코믹스", image: "https://via.placeholder.com/300x400" },
-  { title: "[전자책]드래콘! 4권", author: "쇼쿠바이 히로요미", publisher: "S코믹스", image: "https://via.placeholder.com/300x400" },
-  { title: "[전자책]마녀의 여행 3권", author: "나나오 이츠키", publisher: "S코믹스", image: "https://via.placeholder.com/300x400" },
+  { title: "광마회귀", author: "유진성", publisher: "네이버웹툰", image: "https://www.kmas.or.kr:443/common/file/atchmnflDownload.ajax?fileImageId=3000268562" },
+  { title: "원피스109권", author: "오다 에이치로", publisher: "대원씨아이", image: "https://www.kmas.or.kr/common/file/atchmnflDownload.ajax?fileImageId=aa5bb281-127b-439d-ab0d-e30d528a2845" },
+  { title: "먼작귀1", author: "나가노", publisher: "미우", image: "https://www.kmas.or.kr/common/file/atchmnflDownload.ajax?fileImageId=5631bec4-16b0-46a4-8904-ae8c5a912c53" },
+  { title: "먼작귀2", author: "나가노", publisher: "미우", image: "https://www.kmas.or.kr/common/file/atchmnflDownload.ajax?fileImageId=a813c4da-6214-47dc-bf20-8e3c88ec1e19" },
+  { title: "먼작귀3", author: "나가노", publisher: "미우", image: "https://www.kmas.or.kr/common/file/atchmnflDownload.ajax?fileImageId=6a610838-d39c-4a49-8d0b-4801ae846145" },
 ];
 
 function FeaturedWorks() {
