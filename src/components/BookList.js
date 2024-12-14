@@ -79,7 +79,16 @@ const BookList = ({ books }) => {
     <div style={styles.container}>
       {books.map((book, index) => (
         <div key={index} style={styles.card}>
-          <img src={book.imageDownloadUrl} alt={book.title} style={styles.image} />
+          <img
+          src={book.imageDownloadUrl || "/no-image.png"}
+          alt={book.title || "이미지 없음"}
+          style={styles.image}
+          onError={(e) => {
+            e.target.onerror = null; // 무한 호출 방지
+            e.target.src = "/usagi_no_image.png"; // 대체 이미지 설정
+          }}
+        />
+
           <h3 style={styles.title}>{book.prdctNm}</h3>
           <p style={styles.author}>
             대표(그림)작가: {book.pictrWritrNm || "정보 없음"}

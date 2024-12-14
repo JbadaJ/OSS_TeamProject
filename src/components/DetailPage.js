@@ -109,10 +109,15 @@ const DetailPage = () => {
     <div style={styles.container}>
       <h1 style={styles.title}>{bookDetail.title || "제목 없음"}</h1>
       <img
-        src={bookDetail.imageDownloadUrl || "https://via.placeholder.com/250"}
-        alt={bookDetail.title || "이미지 없음"}
-        style={styles.image}
-      />
+        src={bookDetail.imageDownloadUrl || "/usagi_no_image.png"} // 대체 이미지 경로 설정
+        alt={bookDetail.title || "이미지 없음"} // 대체 텍스트 설정
+        style={styles.image} // 스타일 적용
+        onError={(e) => {
+          e.target.onerror = null; // 무한 호출 방지
+          e.target.src = "/no-image.png"; // 이미지 로드 실패 시 대체 이미지 표시
+      }}
+    />
+
       <table style={styles.table}>
         <tbody>
           <tr>
