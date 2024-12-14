@@ -61,7 +61,7 @@ const styles = {
 };
 
 const DetailPage = () => {
-  const { isbn } = useParams(); // URL에서 ISBN 가져오기
+  const { isbnOrTitle } = useParams(); // URL에서 ISBN 또는 제목 가져오기
   const [bookDetail, setBookDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState(null); // 에러 상태
@@ -69,9 +69,14 @@ const DetailPage = () => {
   useEffect(() => {
     const fetchBookDetail = async () => {
       try {
-        const response = await fetch(
-          `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&isbn=${isbn}`
-        );
+        // API 호출 URL
+        const targetUrl = isbnOrTitle.match(/^\d+$/)
+          ? `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&isbn=${isbnOrTitle}`
+          : `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&title=${encodeURIComponent(
+              isbnOrTitle
+            )}`;
+
+        const response = await fetch(targetUrl);
         if (!response.ok) {
           throw new Error("데이터를 가져오는 데 실패했습니다.");
         }
@@ -90,7 +95,7 @@ const DetailPage = () => {
     };
 
     fetchBookDetail();
-  }, [isbn]);
+  }, [isbnOrTitle]);
 
   if (isLoading) {
     return <div style={styles.loading}>로딩 중...</div>;
