@@ -123,10 +123,15 @@ const BookPage = () => {
         {books.map((book) => (
           <div key={book.id} style={styles.bookCard}>
             <img
-              src={book.imageDownloadUrl}
-              alt={book.title}
+              src={book.imageDownloadUrl || "/usagi_no_image.png"} // 기본 이미지 경로
+              alt={book.title || "이미지 없음"} // alt 값 처리
               style={styles.image}
+              onError={(e) => {
+                e.target.onerror = null; // 무한 호출 방지
+                e.target.src = "/usagi_no_image.png"; // 대체 이미지 설정
+              }}
             />
+
             <div style={styles.info}>
               <h3 style={styles.bookTitle}>{book.title}</h3>
 
