@@ -32,6 +32,7 @@ function App() {
 
                 {/* 선호작 페이지 */}
                 <Route path="/like" element={<Like />} />
+                <Route path="/detail/:isbnOrTitle" element={<DetailPage />} />
                 <Route path="/detail/:isbn" element={<DetailPage />} />
                 <Route path="/search" element={<MaintoSearch />} />
                 <Route path= "/guide" element={<Guide/>} />
