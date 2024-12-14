@@ -26,6 +26,7 @@ const BookList = ({ books }) => {
 
   const handleAddToFavorites = async (book) => {
     const isFavorite = favoriteBooks.some((fav) => fav.isbn === book.isbn);
+    console.log(`Detail Link ISBN: ${book.isbn}`);
 
     if (isFavorite) {
       // 이미 선호작에 있는 경우 제거
@@ -87,9 +88,13 @@ const BookList = ({ books }) => {
           </p>
           
           <div style={styles.actions}>
-            <Link to={`/detail/${book.isbn}`} style={styles.link}>
-              상세 보기
-            </Link>
+          <Link
+            to={`/detail/${book.isbn || encodeURIComponent(book.prdctNm)}`} 
+            style={styles.link}
+          >
+            상세 보기
+          </Link>
+
             <button
               onClick={() => handleAddToFavorites(book)}
               style={styles.favoriteButton}

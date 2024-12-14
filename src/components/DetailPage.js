@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"; // React Router에서 useParams 가져오기
+
 const styles = {
   container: {
     padding: "20px",
     fontFamily: "'Roboto', sans-serif",
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#ffffff",
     borderRadius: "8px",
     maxWidth: "800px",
     margin: "20px auto",
@@ -12,7 +13,7 @@ const styles = {
   },
   title: {
     textAlign: "center",
-    fontSize: "24px",
+    fontSize: "28px",
     fontWeight: "bold",
     color: "#333",
     marginBottom: "20px",
@@ -20,7 +21,7 @@ const styles = {
   image: {
     display: "block",
     margin: "0 auto 20px",
-    width: "200px",
+    width: "250px",
     height: "auto",
     borderRadius: "8px",
     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
@@ -29,11 +30,15 @@ const styles = {
     width: "100%",
     borderCollapse: "collapse",
     marginTop: "20px",
+    textAlign: "left",
   },
-  tableHeader: {
-    backgroundColor: "#007bff",
-    color: "#fff",
+  headerCell: {
     fontWeight: "bold",
+    textAlign: "left",
+    padding: "12px",
+    fontSize: "16px",
+    color: "#ffffff",
+    backgroundColor: "#007bff",
   },
   cell: {
     border: "1px solid #ddd",
@@ -41,19 +46,25 @@ const styles = {
     fontSize: "14px",
     color: "#555",
   },
-  headerCell: {
-    fontWeight: "bold",
-    textAlign: "left",
-    padding: "12px",
-    fontSize: "16px",
-    color: "#fff",
-    backgroundColor: "#007bff",
+  loading: {
+    textAlign: "center",
+    padding: "20px",
+    fontSize: "18px",
+    color: "#555",
+  },
+  error: {
+    textAlign: "center",
+    padding: "20px",
+    fontSize: "18px",
+    color: "red",
   },
 };
 
 const DetailPage = () => {
   const { isbn } = useParams(); // URL에서 ISBN 가져오기
   const [bookDetail, setBookDetail] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태
+  const [error, setError] = useState(null); // 에러 상태
 
   useEffect(() => {
     const fetchBookDetail = async () => {
@@ -61,43 +72,46 @@ const DetailPage = () => {
         const response = await fetch(
           `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&isbn=${isbn}`
         );
+        if (!response.ok) {
+          throw new Error("데이터를 가져오는 데 실패했습니다.");
+        }
         const data = await response.json();
-
-        console.log("상세 정보 응답 데이터:", data);
 
         if (data?.result?.resultState === "success" && data?.itemList?.length > 0) {
           setBookDetail(data.itemList[0]);
         } else {
-          console.error("책 정보를 찾을 수 없습니다.");
+          setError("책 정보를 찾을 수 없습니다.");
         }
-      } catch (error) {
-        console.error("상세 정보 요청 중 오류 발생:", error);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchBookDetail();
   }, [isbn]);
 
-  if (!bookDetail) {
-    return (
-      <div style={{ textAlign: "center", padding: "20px" }}>
-        <p>로딩 중...</p>
-      </div>
-    );
+  if (isLoading) {
+    return <div style={styles.loading}>로딩 중...</div>;
+  }
+
+  if (error) {
+    return <div style={styles.error}>{error}</div>;
   }
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>{bookDetail.title}</h1>
+      <h1 style={styles.title}>{bookDetail.title || "제목 없음"}</h1>
       <img
-        src={bookDetail.imageDownloadUrl}
-        alt={bookDetail.title}
+        src={bookDetail.imageDownloadUrl || "https://via.placeholder.com/250"}
+        alt={bookDetail.title || "이미지 없음"}
         style={styles.image}
       />
       <table style={styles.table}>
         <tbody>
           <tr>
-            <td style={styles.headerCell}>자류유형</td>
+            <td style={styles.headerCell}>자료 유형</td>
             <td style={styles.cell}>단행본</td>
           </tr>
           <tr>
@@ -113,11 +127,11 @@ const DetailPage = () => {
             <td style={styles.cell}>{bookDetail.subtitl || "정보 없음"}</td>
           </tr>
           <tr>
-            <td style={styles.headerCell}>그림작가</td>
+            <td style={styles.headerCell}>그림 작가</td>
             <td style={styles.cell}>{bookDetail.pictrWritrNm || "정보 없음"}</td>
           </tr>
           <tr>
-            <td style={styles.headerCell}>글작가</td>
+            <td style={styles.headerCell}>글 작가</td>
             <td style={styles.cell}>{bookDetail.sntncWritrNm || "정보 없음"}</td>
           </tr>
           <tr>
@@ -137,7 +151,7 @@ const DetailPage = () => {
             <td style={styles.cell}>{bookDetail.plscmpnIdNm || "정보 없음"}</td>
           </tr>
           <tr>
-            <td style={styles.headerCell}>연령등급</td>
+            <td style={styles.headerCell}>연령 등급</td>
             <td style={styles.cell}>{bookDetail.ageGradCdNm || "정보 없음"}</td>
           </tr>
         </tbody>
