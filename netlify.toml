@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/openapi/*"
+  to = "https://www.kmas.or.kr/openapi/:splat"
+  status = 200
+  force = true

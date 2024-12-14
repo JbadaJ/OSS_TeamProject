@@ -10,12 +10,16 @@ function Page1() {
         setIsLoading(true); // 로딩 시작
         try {
             console.log(`Fetching data with search term: ${search}`);
-            const targetUrl = `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&title=${search}&viewItemCnt=100&pageNo=1`;
-
+            const targetUrl = `/openapi/search/bookAndWebtoonList?prvKey=c9c9eeedd12fc5ce4602648e80e4a337&title=${encodeURIComponent(search)}&viewItemCnt=100&pageNo=1`;
+    
             const response = await fetch(targetUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
             const data = await response.json();
             console.log("Raw API Response Data:", data);
-
+    
             if (data.result?.resultState === "success" && data.itemList) {
                 setItems(data.itemList); // itemList 배열 저장
             } else {
@@ -23,7 +27,7 @@ function Page1() {
                 setItems([]); // 데이터 초기화
             }
         } catch (error) {
-            console.error("Network or Fetch Error:", error);
+            console.error("Network or Fetch Error:", error.message || error);
             setItems([]); // 데이터 초기화
         } finally {
             setIsLoading(false); // 로딩 종료
